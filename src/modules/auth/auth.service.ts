@@ -1,7 +1,6 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { User } from "../users/user.model";
-import { env } from "../../config/env";
+import { hashPassword, comparePassword } from "../../utils/hash";
+import { signToken } from "../../utils/jwt";
 
 type RegisterInput = {
   email: string;
@@ -20,7 +19,7 @@ export const registerUser = async ({ email, password }: RegisterInput) => {
     throw new Error("El usuario ya existe");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await hashPassword(password);
 
   const user = await User.create({
     email,
@@ -42,25 +41,17 @@ export const loginUser = async ({ email, password }: LoginInput) => {
     throw new Error("Credenciales inválidas");
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await comparePassword(password, user.password);
 
   if (!isPasswordValid) {
     throw new Error("Credenciales inválidas");
   }
 
-  if (!env.JWT_SECRET) {
-    throw new Error("JWT_SECRET no está definido");
-  }
-
-  const token = jwt.sign(
-    {
-      userId: user._id,
-      role: user.role,
-      email: user.email,
-    },
-    env.JWT_SECRET,
-    { expiresIn: "1h" },
-  );
+  const token = signToken({
+    userId: String(user._id),
+    email: user.email,
+    role: user.role,
+  });
 
   return {
     token,

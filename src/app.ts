@@ -5,7 +5,7 @@ import helmet from "helmet";
 import { healthRouter } from "./routes/health";
 import { notFoundHandler } from "./middlewares/notFound";
 import { errorHandler } from "./middlewares/errorHandler";
-import { authRouter } from "./modules/auth/auth.routes";
+import authRouter from "./modules/auth/auth.routes";
 
 export const app = express();
 
