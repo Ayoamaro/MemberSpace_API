@@ -6,6 +6,7 @@ import {
   deleteUserById,
 } from "./users.service";
 import { UserRole } from "./user.model";
+import { userIdParamSchema, updateUserRoleSchema } from "./users.schema";
 
 type UserParams = {
   id: string;
@@ -38,7 +39,9 @@ export const getUserByIdController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = await getUserById(req.params.id);
+    const { id } = userIdParamSchema.parse(req.params);
+
+    const user = await getUserById(id);
 
     res.status(200).json({
       message: "Usuario obtenido correctamente",
@@ -55,9 +58,10 @@ export const updateUserRoleController = async (
   next: NextFunction,
 ) => {
   try {
-    const { role } = req.body;
+    const { id } = userIdParamSchema.parse(req.params);
+    const { role } = updateUserRoleSchema.parse(req.body);
 
-    const user = await updateUserRole(req.params.id, role);
+    const user = await updateUserRole(id, role);
 
     res.status(200).json({
       message: "Rol actualizado correctamente",
@@ -74,7 +78,9 @@ export const deleteUserController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = await deleteUserById(req.params.id);
+    const { id } = userIdParamSchema.parse(req.params);
+
+    const user = await deleteUserById(id);
 
     res.status(200).json({
       message: "Usuario eliminado correctamente",
