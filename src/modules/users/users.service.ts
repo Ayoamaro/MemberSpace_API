@@ -8,7 +8,7 @@ export const getAllUsers = async () => {
 
 export const getUserById = async (id: string) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new Error("ID de usuario inválido");
+    throw new HttpError("ID de usuario inválido", 400);
   }
 
   const user = await User.findById(id).select("-password");
@@ -22,11 +22,11 @@ export const getUserById = async (id: string) => {
 
 export const updateUserRole = async (id: string, role: UserRole) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new Error("ID de usuario inválido");
+    throw new HttpError("ID de usuario inválido", 400);
   }
 
   if (!["USER", "ADMIN"].includes(role)) {
-    throw new Error("Rol inválido");
+    throw new HttpError("Rol inválido", 400);
   }
 
   const user = await User.findByIdAndUpdate(
@@ -44,7 +44,7 @@ export const updateUserRole = async (id: string, role: UserRole) => {
 
 export const deleteUserById = async (id: string) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new Error("ID de usuario inválido");
+    throw new HttpError("ID de usuario inválido", 400);
   }
 
   const user = await User.findByIdAndDelete(id).select("-password");
