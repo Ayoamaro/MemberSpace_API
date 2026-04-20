@@ -25,8 +25,9 @@ export const getUsersController = async (
     const users = await getAllUsers();
 
     res.status(200).json({
+      success: true,
       message: "Usuarios obtenidos correctamente",
-      users,
+      data: { users },
     });
   } catch (error) {
     next(error);
@@ -44,8 +45,9 @@ export const getUserByIdController = async (
     const user = await getUserById(id);
 
     res.status(200).json({
+      success: true,
       message: "Usuario obtenido correctamente",
-      user,
+      data: { user },
     });
   } catch (error) {
     next(error);
@@ -64,8 +66,9 @@ export const updateUserRoleController = async (
     const user = await updateUserRole(id, role);
 
     res.status(200).json({
+      success: true,
       message: "Rol actualizado correctamente",
-      user,
+      data: { user },
     });
   } catch (error) {
     next(error);
@@ -83,8 +86,9 @@ export const deleteUserController = async (
     const user = await deleteUserById(id);
 
     res.status(200).json({
+      success: true,
       message: "Usuario eliminado correctamente",
-      user,
+      data: { user },
     });
   } catch (error) {
     next(error);

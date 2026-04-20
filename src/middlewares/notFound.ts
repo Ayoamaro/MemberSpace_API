@@ -5,5 +5,8 @@ export function notFoundHandler(
   res: Response,
   _next: NextFunction,
 ) {
-  res.status(404).json({ error: "Not Found" });
+  res.status(404).json({
+    success: false,
+    message: "Ruta no encontrada",
+  });
 }

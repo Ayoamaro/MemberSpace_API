@@ -13,8 +13,9 @@ export const registerController = async (
     const user = await registerUser(parsed);
 
     res.status(201).json({
+      success: true,
       message: "Usuario registrado correctamente",
-      user,
+      data: { user },
     });
   } catch (error) {
     next(error);
@@ -32,8 +33,9 @@ export const loginController = async (
     const result = await loginUser(parsed);
 
     res.status(200).json({
+      success: true,
       message: "Login correcto",
-      ...result,
+      data: result,
     });
   } catch (error) {
     next(error);

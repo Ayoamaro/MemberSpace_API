@@ -3,16 +3,16 @@ import { ZodError } from "zod";
 import { HttpError } from "../utils/httpError";
 
 export const errorHandler = (
-  err: any,
+  err: unknown,
   _req: Request,
   res: Response,
   _next: NextFunction,
 ) => {
   console.error(err);
 
-  // ZOD
   if (err instanceof ZodError) {
     return res.status(400).json({
+      success: false,
       message: "Error de validación",
       errors: err.issues.map((e) => ({
         field: e.path.join("."),
@@ -21,15 +21,22 @@ export const errorHandler = (
     });
   }
 
-  // Custom HTTP error
   if (err instanceof HttpError) {
     return res.status(err.statusCode).json({
+      success: false,
       message: err.message,
     });
   }
 
-  // Fallback
+  if (err instanceof Error) {
+    return res.status(500).json({
+      success: false,
+      message: err.message || "Internal Server Error",
+    });
+  }
+
   return res.status(500).json({
+    success: false,
     message: "Internal Server Error",
   });
 };
