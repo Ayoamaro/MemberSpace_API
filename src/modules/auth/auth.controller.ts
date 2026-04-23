@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { loginUser, registerUser } from "./auth.service";
 import { registerSchema, loginSchema } from "./auth.schema";
+import { sendSuccess } from "../../utils/apiResponse";
 
 export const registerController = async (
   req: Request,
@@ -12,11 +13,7 @@ export const registerController = async (
 
     const user = await registerUser(parsed);
 
-    res.status(201).json({
-      success: true,
-      message: "Usuario registrado correctamente",
-      data: { user },
-    });
+    return sendSuccess(res, 201, "Usuario registrado correctamente", { user });
   } catch (error) {
     next(error);
   }
@@ -32,11 +29,7 @@ export const loginController = async (
 
     const result = await loginUser(parsed);
 
-    res.status(200).json({
-      success: true,
-      message: "Login correcto",
-      data: result,
-    });
+    return sendSuccess(res, 200, "Login correcto", result);
   } catch (error) {
     next(error);
   }

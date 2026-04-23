@@ -7,6 +7,7 @@ import {
 } from "./users.service";
 import { UserRole } from "./user.model";
 import { userIdParamSchema, updateUserRoleSchema } from "./users.schema";
+import { sendSuccess } from "../../utils/apiResponse";
 
 type UserParams = {
   id: string;
@@ -24,11 +25,7 @@ export const getUsersController = async (
   try {
     const users = await getAllUsers();
 
-    res.status(200).json({
-      success: true,
-      message: "Usuarios obtenidos correctamente",
-      data: { users },
-    });
+    return sendSuccess(res, 200, "Usuarios obtenidos correctamente", { users });
   } catch (error) {
     next(error);
   }
@@ -44,11 +41,7 @@ export const getUserByIdController = async (
 
     const user = await getUserById(id);
 
-    res.status(200).json({
-      success: true,
-      message: "Usuario obtenido correctamente",
-      data: { user },
-    });
+    return sendSuccess(res, 200, "Usuario obtenido correctamente", { user });
   } catch (error) {
     next(error);
   }
@@ -65,11 +58,7 @@ export const updateUserRoleController = async (
 
     const user = await updateUserRole(id, role);
 
-    res.status(200).json({
-      success: true,
-      message: "Rol actualizado correctamente",
-      data: { user },
-    });
+    return sendSuccess(res, 200, "Rol actualizado correctamente", { user });
   } catch (error) {
     next(error);
   }
@@ -85,11 +74,7 @@ export const deleteUserController = async (
 
     const user = await deleteUserById(id);
 
-    res.status(200).json({
-      success: true,
-      message: "Usuario eliminado correctamente",
-      data: { user },
-    });
+    return sendSuccess(res, 200, "Usuario eliminado correctamente", { user });
   } catch (error) {
     next(error);
   }
