@@ -8,11 +8,20 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     environment:
       name: production
       url: https://memberspace-api.onrender.com
 
     steps:
+      - name: Debug secret presence
+        run: |
+          if [ -z "${{ secrets.RENDER_DEPLOY_HOOK }}" ]; then
+            echo "Secret is empty"
+            exit 1
+          else
+            echo "Secret exists"
+          fi
+
       - name: Trigger Render Deploy
-        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
