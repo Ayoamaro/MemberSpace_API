@@ -28,12 +28,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  * Root endpoint (API info)
  */
 app.get("/", (_req, res) => {
-  res.json({
-    name: "MemberSpace API",
-    version: "1.0.0",
-    status: "running",
-    docs: "/docs",
-  });
+  res.redirect("/docs");
 });
 
 /**

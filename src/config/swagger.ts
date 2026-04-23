@@ -1,5 +1,9 @@
 import swaggerJSDoc from "swagger-jsdoc";
 
+const serverUrl =
+  process.env.RENDER_EXTERNAL_URL ||
+  `http://localhost:${process.env.PORT || 3000}`;
+
 export const swaggerSpec = swaggerJSDoc({
   definition: {
     openapi: "3.0.0",
@@ -10,7 +14,7 @@ export const swaggerSpec = swaggerJSDoc({
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: serverUrl,
       },
     ],
     components: {
